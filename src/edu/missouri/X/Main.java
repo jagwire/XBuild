@@ -57,7 +57,7 @@ import javax.tools.ToolProvider;
  */
 public class Main {
 
-    private static final String FILENAME = "x.java";
+
 
     public Main(String[] args) {
 
@@ -97,62 +97,7 @@ public class Main {
             }
         } else {
             //find project.java
-            log("Welcome To X!");
-            String filename = System.getProperty("user.dir") + File.separator + FILENAME;
-            File sourceFile = new File(filename);
-            String classname = System.getProperty("user.dir");
-            File classFile = new File(classname + "/tmp");
-            classFile.mkdirs();
-            System.out.println("MADE: " + classFile.getAbsolutePath());
-            if (sourceFile.exists()) {
-                try {
-                    log("SUCCESS!");
-                    if (classFile.exists()) {
-                        log("CLASS EXISTS!");
-                    }
-
-                    JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-                    StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
-
-                    fileManager.setLocation(StandardLocation.CLASS_OUTPUT, Arrays.asList(classFile));
-                    Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(sourceFile);
-                    compiler.getTask(null, fileManager, null, null, null, fileObjects).call();
-
-//                System.out.println("file:/"+System.getProperty("user.dir")+File.separator+"project.class");
-                    try {
-                        URLClassLoader cl = new URLClassLoader(new URL[]{classFile.toURI().toURL()}, this.getClass().getClassLoader());
-
-                        Class clazz = cl.loadClass("x");
-
-                        Base b = (Base) clazz.newInstance();
-                        b.build();
-
-                        cleanup(classFile);
-                    } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (MalformedURLException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IllegalAccessException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (SecurityException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IllegalArgumentException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (InstantiationException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    try {
-                        fileManager.close();
-                    } catch (IOException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } catch (IOException ex) {
-                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else {
-                log("NO PROJECT FILE FOUND:" + sourceFile.getAbsolutePath());
-                log("Usage: x <command> (args)");
-            }
+            new DefaultCommandRunner().run();
         }
     }
 
