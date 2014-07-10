@@ -84,8 +84,8 @@ public class Main {
                     break;
 
                 case "add": //act as generator, could add dependency, could add controller, model, etc...
-                case "compile": //compile project
-                case "build": //build project?
+                case "compile": //compile project?
+                case "build": //build project
                 case "test": //run tests
                 case "package": //build, run tests, make jar
                 case "publish": //package and upload somewhere
